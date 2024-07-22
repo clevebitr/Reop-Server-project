@@ -14,8 +14,8 @@ router.post('/login',async(req,res,next)=>{
     const user = await ueModel.findOne({where:{email}});
     if(!user){
       console.log(user)
-        return res.json({
-          code:1002,
+        return res.status(403).json({
+          code:403,
           msg:"登录失败,检查账号或密码",
           login_state:false
         });
@@ -27,15 +27,15 @@ router.post('/login',async(req,res,next)=>{
         { expiresIn: '3h' }
       )
       console.log('🚀 → token:', token)
-      return res.json({
-        code:1001,
+      return res.status(201).json({
+        code:200,
         msg:"登录成功",
         token,
         login_state:true
       });
     }else{
-      return res.json({
-        code:1002,
+      return res.status(403).json({
+        code:403,
         msg:"登录失败,检查账号或密码",
         login_state:true
       });
@@ -58,57 +58,67 @@ router.get('/search',async(req,res,next)=>{
   }
 })
 
-//添加 http://localhost:3000/student/add
+//添加 http://localhost:3000/api/add
 router.post('/add',async(req,res,next)=>{
   try{
     const{id,uname,upwd,email,admin} = req.body;
     const user = await ueModel.findOne({where:{email}});
     if (user) {
-      return res.json({
-        code:1002,
-        msg:'该用户已存在',
-      });
+      return res.status(500).json(
+        {
+         code:500,
+         msg:'该用户已存在'
+        }
+       );
     }
     await ueModel.create({id,uname,upwd,email,admin});
-    res.json({
-      code:1001,
-      msg:'注册成功',
-    });
+    res.status(201).json(
+     {
+      code:201,
+      msg:'注册成功'
+     }
+    );
   }catch(err){
     next(err);
   }
 });
 
-//删除 http://localhost:3000/student/delete
+//删除 http://localhost:3000/api/delete
 router.post('/delete',async(req,res,next)=>{
   try{
     const{id} = req.body;
     await ueModel.destroy({where:{id}});
-    res.json({
-      code:1001,
-      msg:'删除成功',
-    });
+    res.status(201).json(
+      {
+       code:201,
+       msg:'删除成功'
+      }
+     );
   }catch(err){
     next(err);
   }
 });
 
-//更新 http://localhost:3000/student/update
+//更新 http://localhost:3000/api/update
 router.put('/update',async(req,res,next)=>{
   try{
     const{id,uname,upwd,email,admin} = req.body;
     const user = await ueModel.findOne({where:{email}});
     if(!user){
-        return res.json({
-          code:1002,
-          msg:"查询失败",
-        });
+        return res.status(500).json(
+          {
+           code:500,
+           msg:'查询失败'
+          }
+         );
     }
     await user.update({uname,upwd,email,admin});
-    res.json({
-      code:1001,
-      msg:"更新成功",
-    });
+    res.status(201).json(
+      {
+       code:201,
+       msg:'更新成功'
+      }
+     );
   }catch(err){
     next(err);
   }
@@ -118,7 +128,7 @@ router.put('/update',async(req,res,next)=>{
 router.use((err,req,res,next)=>{
   console.error(err);
   res.status(500).json({
-    code:1002,
+    code:500,
     msg:"服务器发生错误"
   });
 });

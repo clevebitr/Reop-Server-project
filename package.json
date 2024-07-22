@@ -2,13 +2,13 @@
   "name": "reop-server-project",
   "version": "1.0.0",
   "description": "本项目是基于Reop HTML 项目的单独后端项目，旨在替代Reop HTML后端",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "node app.js"
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",

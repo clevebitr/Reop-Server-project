@@ -6,7 +6,7 @@ function errorHandler(err, req, res, next) {
     let code = 500;
     let message = 'Internal Server Error';
     // token解析的错误
-    if (err.name === 'UnauthorizedError' && err.message ==="No authorization token was found") {
+    if (err.name === 'UnauthorizedError' && err.message === "No authorization token was found") {
       code = 401
       message = '请登录'
     }else if (err.name === 'UnauthorizedError' && err.message === "jwt expired") {

@@ -8,3 +8,47 @@
  - Node.js 版本选择 `v22.5.1` 稳定版。
  - `nvm`做为nodejs的版本管理工具。
  - `npm`作为本项目的包管理器
+
+ ## 😎启动项目：
+ 1. 安装`node.js v22.5.1`
+ 2. 初始化项目
+``` shell
+> cd ./Reop Server project/
+> npm init -y
+```
+3. 安装依赖包：
+
+    name     | version
+    -------- | -----
+    cookie-parser | 1.4.6
+    cors  | 2.8.5
+    express-jwt | 8.4.1
+    express|4.19.2
+    jsonwebtoken|9.0.2
+    morgan|1.10.0
+    mysql2|3.1.1
+    sequelize|6.37.3
+``` shell
+> npm install cookie-parser@1.4.6
+> npm install cors@2.8.5
+> npm install express-jwt@8.4.1
+> npm install express@4.19.2
+> npm install jsonwebtoken@9.0.2
+> npm install morgan@1.10.0
+> npm install mysql2@3.1.1
+> npm install sequelize@6.37.3
+```
+4. 运行项目
+``` shell
+> node app.js
+或者
+> npm run dev
+```
+## 😁API：
+功能描述|api地址|请求类型|是否需要token
+-------|-------|-------|------------
+登录|http://localhost:3000/api/login  |post|否
+注册|http://localhost:3000/api/add  |post|否
+更新信息|http://localhost:3000/api/update | put|否
+删除|http://localhost:3000/api/delete|post|是
+查询信息|http://localhost:3000/api/search|get|是 
