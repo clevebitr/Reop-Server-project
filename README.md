@@ -1,5 +1,5 @@
 
-<img src="./images/LOGO.png" height="100px" width="100px" >
+<img src="./images/LOGO.png" height="71.428px" width="100px" >
 
 # 🎶Reop Server
 ## 😊简介：
