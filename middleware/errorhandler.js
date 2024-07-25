@@ -16,7 +16,7 @@ function errorHandler(err, req, res, next) {
     res.statusCode = code;
 
     //允许127.0.0.1：5500跨域访问
-    res.header('Access-Control-Allow-Origin', 'http://127.0.0.1:5500')
+    res.header('Access-Control-Allow-Origin', 'http://localhost:5173')
     res.header('Access-Control-Allow-Credentials',true)
     
     //返回数据

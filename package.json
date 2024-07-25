@@ -4,7 +4,7 @@
   "description": "本项目是基于Reop HTML 项目的单独后端项目，旨在替代Reop HTML后端",
   "main": "app.js",
   "scripts": {
-    "dev": "node app.js"
+    "dev": "node-dev app.js"
   },
   "keywords": [],
   "author": "",
@@ -17,6 +17,7 @@
     "jsonwebtoken": "^9.0.2",
     "morgan": "^1.10.0",
     "mysql2": "^3.1.1",
+    "node-dev": "^8.0.0",
     "sequelize": "^6.37.3"
   }
 }

@@ -26,11 +26,17 @@ const ueModel = DB.define("users",{
         defaultValue:null,
         field:"email"
     },
-    admin:{
+    role:{
         type:Sequelize.INTEGER,
         allowNull:false,
-        defaultValue:'0',
-        field:"admin"
+        defaultValue:0,
+        field:"role"//管理员1，编辑2
+    },
+    introduction:{
+        type:Sequelize.STRING(500),
+        allowNull:true,
+        defaultValue:null,
+         field:"introduction"
     }
 })
 
