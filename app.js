@@ -6,73 +6,59 @@ var cookieParser = require('cookie-parser');//Cookies
 // var logger = require('morgan');//日志
 const cors = require('cors');//跨域
 const errorhandler = require('./middleware/errorhandler')//错误中间件
-var { expressjwt: jwt } = require("express-jwt");//token
-const JWT = require("./util/JWT");
-const SECRET_KEY = 'REOPHTMLKEY';// key
+
+var path = require('path')//静态资源
+const JWT = require("./util/JWT");//封装的Token生成函数
+const SECRET_KEY = 'REOPHTMLKEY';// tokenkey
 
 //跨域中间件
 app.use(cors());
+//静态资源文件夹
+app.use(express.static(path.join(__dirname, 'public')))
 
-
-
-
-// //免token验证的接口地址
-// app.use(
-//     jwt({
-//         secret: SECRET_KEY, algorithms: ['HS256'] //加密算法HS256
-//     }).unless({
-//         path: [
-//             '/adminapi/login',
-//             '/adminapi/add',
-//             '/adminapi/update',
-//             '/',
-//             '/adminapi/user/login']
-//     })
-// )
-
-
+//路由中间件，只有登录api放行，其他api需要验证用户token
 app.use((req, res, next) => {
-    
+    //放行login api
     if (req.url === "/adminapi/user/login") {
         next()
         return
     }
 
-    var parts = req.headers.authorization.split(' ');
-    if (parts.length == 2) {
-        var scheme = parts[0];
-        var credentials = parts[1];
+    //获取用户token
+    const token = req.headers['authorization'].split(' ')[1];
+    console.log("[客户端上传Token]-> "+token)
+    if (token) {//用户token存在
+        var payload = JWT.verify(token)//解密token并验证有效性
+        console.log("[客户端解密Token数据为]-> ",payload)
+        if (payload) {//解密的用户数据是否存在
+            //生成token
+            const newToken = JWT.generate({//重新根据解密出的用户数据生成一个新的Token
+                _id: payload._id,
+                _email: payload._email
+            }, "1d")//有效期1day
+    
+            res.header("Access-Control-Expose-Headers","Authorization");//允许前端访问到Authorization
+            res.header("Authorization", newToken)//根据新的Token,设置新的Authorization头
 
-        if (/^Bearer$/i.test(scheme)) {
-            var token = credentials; //获取到token
-            if (token) {
-
-                var payload = JWT.verify(token)//解密token
-
-                if (payload) {
-                    //生成token
-                    const newToken = JWT.generate({
-                        _id: payload.id,
-                        _email: payload.email
-                    }, "1d")
-                    res.header("Access-Control-Expose-Headers","Authorization");//允许前端访问到Authorization
-                    res.header("Authorization", newToken)
-                    console.log("token刷新")
-                    next()
-                } else {
-                    console.log("token过期")
-                    res.status(401).send({
-                        code: '401',
-                        errInfio: "token过期"
-                    })
-                }
-            }
+            next()//放行
+            console.log("[用户Token刷新,已发送]-> ",newToken)
+            
+        } else {//token验证不通过
+            console.log("token过期")
+            res.status(401).send({
+                code: '401',
+                errInfio: "token过期"
+            })
         }
     }
 })
+
 //路由加载前使用中间件
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json()); //使用express.json中间件处理post到的json数据
+
+
+
 app.use(cookieParser(SECRET_KEY));//使用Cookies中间件并设置加密密钥为REOPHTMLKEY
 
 //使用子路由

@@ -7,5 +7,5 @@ const UserRoute = require("./admin/UserRoute")
 module.exports = (app) =>{
     //app.use("/post",post);
     app.use("/adminapi",adminapi)
-    app.use("/adminapi/user/",UserRoute)
+    app.use("/adminapi/user/",UserRoute)//挂载UserRoute子路由
 }

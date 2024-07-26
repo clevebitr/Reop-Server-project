@@ -1,3 +1,5 @@
+//jsonwebtoken二次封装
+
 const jsonwebtoken = require('jsonwebtoken')
 const SECRET_KEY = "REOPHTMLKEY"
 

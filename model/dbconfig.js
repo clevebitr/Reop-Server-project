@@ -18,7 +18,7 @@ const DB = new Sequelize("onlinedb","root","123456",{
 //测试链接
 DB.authenticate()
     .then(()=>{
-        console.log("数据库链接成功");
+        console.log("[数据库链接成功]");
     })
     .catch((err)=>{
         console.log("数据库链接失败：",err);
