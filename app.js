@@ -26,10 +26,10 @@ app.use((req, res, next) => {
 
     //获取用户token
     const token = req.headers['authorization'].split(' ')[1];
-    console.log("[客户端上传Token]-> "+token)
+    console.log("[客户端上传Token] -> "+token)
     if (token) {//用户token存在
         var payload = JWT.verify(token)//解密token并验证有效性
-        console.log("[客户端解密Token数据为]-> ",payload)
+        console.log("[客户端解密Token数据为] -> ",payload)
         if (payload) {//解密的用户数据是否存在
             //生成token
             const newToken = JWT.generate({//重新根据解密出的用户数据生成一个新的Token
@@ -41,7 +41,7 @@ app.use((req, res, next) => {
             res.header("Authorization", newToken)//根据新的Token,设置新的Authorization头
 
             next()//放行
-            console.log("[用户Token刷新,已发送]-> ",newToken)
+            console.log("[用户Token刷新,已发送] -> ",newToken)
             
         } else {//token验证不通过
             console.log("token过期")

@@ -5,9 +5,9 @@ const ueModel = require("../../models/ueModel")//调用ueModel模块，与数据
 
 //定义UserService方法
 const UserService = {
-    login:async({email,upwd})=>{//login函数
+    login: async ({ email, upwd }) => {//login函数
         return ueModel.findOne({//在数据库中查找对应的邮箱，密码。返回到UserController
-            where:{//查找条件
+            where: {//查找条件
                 email,
                 upwd
             }
@@ -15,18 +15,30 @@ const UserService = {
     },
 
     //更新用户数据函数
-    upload:async({id,uname,avatar,introduction})=>{
+    upload: async ({ id, uname, avatar, introduction }) => {
         if (avatar) {//如果用户上传了头像，更新头像
-            const user = await ueModel.findOne({where:{id}});//根据传来的用户id查找对应用户
+            const user = await ueModel.findOne({ where: { id } });//根据传来的用户id查找对应用户
             if (user) {//存在对应用户
-                return user.update({uname,avatar,introduction});
+                return user.update({ uname, avatar, introduction });
             }
-        }else{//用户并未上传头像，不更新数据
-            const user = await ueModel.findOne({where:{id}});//根据传来的用户id查找对应用户
+        } else {//用户并未上传头像，不更新数据
+            const user = await ueModel.findOne({ where: { id } });//根据传来的用户id查找对应用户
             if (user) {//存在对应用户
-                return user.update({uname,introduction});
+                return user.update({ uname, introduction });
             }
         }
+    },
+
+    add: async ({ uname, introduction, avatar, upwd, role, email }) => {
+        const user = await ueModel.findOne({ where: { email } });
+        if (user) {
+            return false
+        }
+        return await ueModel.create({ uname, upwd, email, role, introduction, avatar });
+    },
+
+    getlist:async()=>{
+        return await ueModel.findAll({attributes: ['uname', 'email','introduction','role','avatar']});
     }
 }
 

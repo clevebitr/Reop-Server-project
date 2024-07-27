@@ -8,7 +8,7 @@ const UserController = {
     //登录函数
     login: async (req, res) => {
 
-        console.log('[用户传来的登录信息] ->',req.body)
+        console.log('[用户传来的登录信息] ->', req.body)
 
         //调用UserService方法进行操作
         var result = await UserService.login(req.body)//传入用户发来的数据
@@ -76,6 +76,36 @@ const UserController = {
                 }
             })
         }
+    },
+
+    add: async (req, res) => {
+
+
+        const { uname, introduction, role, email, upwd } = req.body//数据处理，取得名称，简介信息
+
+        //判断用户上传的头像，如果未更新头像，将avatar变量赋值空字符串
+        const avatar = req.file ? `/avataruploads/${req.file.filename}` : ""
+
+        //调用userService方法更新
+        const userinfo = await UserService.add({ uname, introduction, avatar, upwd, role: Number(role), email })
+        if (userinfo) {
+            res.send({
+                ActionType: "OK",
+            })
+        } else {
+            res.send({
+                ActionType: "NO",
+                Messafe: "用户已存在"
+            })
+        }
+    },
+
+    getlist: async (req,res) => {
+        const result = await UserService.getlist()
+        res.send({
+            ActionType: 'OK',
+            data: result
+        })
     }
 }
 

@@ -10,4 +10,6 @@ const UserRoute = express();//实例化
 
 UserRoute.post("/login",UserController.login)//用户登录Api,调用UserController.login方法
 UserRoute.post("/upload",upload.single('file'),UserController.upload)//用户更新数据api，调用UserController.upload方法
+UserRoute.post("/add",upload.single('file'),UserController.add)
+UserRoute.get("/list",UserController.getlist)
 module.exports  = UserRoute
