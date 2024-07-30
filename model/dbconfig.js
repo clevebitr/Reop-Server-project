@@ -11,7 +11,7 @@ const DB = new Sequelize("onlinedb","root","123456",{
         idle:10000,//10秒内没有调用，释放该链接
     },define:{
         timestamps:false
-    },loggong:console.log//控制台输出日志
+    },loggong:console.log("[SQL执行]")+console.log//控制台输出日志
 });
 
 
@@ -21,7 +21,7 @@ DB.authenticate()
         console.log("[数据库链接成功]");
     })
     .catch((err)=>{
-        console.log("数据库链接失败：",err);
+        console.log("[数据库链接失败]：",err);
     });
 
 module.exports = DB

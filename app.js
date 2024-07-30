@@ -73,5 +73,5 @@ app.use(errorhandler)
 
 
 app.listen(port, () => { //监听端口
-    console.log(`express Reop Server listening at http://localhost:${port}`);
+    console.log(`[express Reop Server listening at http://localhost:${port}]`);
 })

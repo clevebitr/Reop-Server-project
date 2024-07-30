@@ -1,5 +1,6 @@
 //adminapi/user/传来的数据在这里进行处理，返回到UserController 
 
+//const { putList } = require("../../controller/admin/UserController");
 const ueModel = require("../../models/ueModel")//调用ueModel模块，与数据库进行通信
 
 
@@ -37,8 +38,21 @@ const UserService = {
         return await ueModel.create({ uname, upwd, email, role, introduction, avatar });
     },
 
-    getlist:async()=>{
-        return await ueModel.findAll({attributes: ['uname', 'email','introduction','role','avatar']});
+    putList:async(body)=>{
+        const{id,uname,upwd,email,role,introduction} = body;
+        const user =  await ueModel.findOne({where:{id}});
+        return await user.update({uname,upwd,email,role,introduction});
+    },
+
+    getlist:async({id})=>{
+        if (id) {
+            return await ueModel.findOne({ where: { id } })
+        }
+        return await ueModel.findAll({attributes: ['uname', 'email','introduction','role','avatar','id']});
+    },
+
+    delList:async({id})=>{
+        return await ueModel.destroy({where:{id}});
     }
 }
 

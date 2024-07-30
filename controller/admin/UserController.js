@@ -100,11 +100,28 @@ const UserController = {
         }
     },
 
+    
+    putList:async (req,res)=>{
+        await UserService.putList(req.body)
+        res.send({
+            ActionType:"OK"
+        })
+    },
+
     getlist: async (req,res) => {
-        const result = await UserService.getlist()
+
+        const result = await UserService.getlist(req.params)
         res.send({
             ActionType: 'OK',
             data: result
+        })
+    },
+
+    delList:async(req,res)=>{
+        console.log("[id]",req.params.id)
+        await UserService.delList(req.params)
+        res.send({
+            ActionType:'OK'
         })
     }
 }
