@@ -8,6 +8,19 @@ const NewsService = {
         //console.log('数据库内容处理')
     },
 
+    upload: async ({ id, title, cover, content, category, editTime }) => {
+        const news = await neModel.findOne({ where: { id } });//根据传来的用户id查找对应用户
+        if (news) {
+            if (cover) {//如果用户上传了img，更新img
+                console.log('[新闻更新封面] -> ', cover)
+                return news.update({ title, cover, content, category, editTime });
+            } else {//用户并未上传img，不更新img数据
+                console.log('[新闻封面未更新，但更新了其他信息]')
+                return news.update({ title, content, category, editTime });
+            }
+        }
+    },
+
     getlist: async ({ id }) => {
         if (id) {
             return await neModel.findOne({ where: { id } })
@@ -29,8 +42,8 @@ const NewsService = {
         }
     },
 
-    delList:async({id})=>{
-        return await neModel.destroy({where:{id}});
+    delList: async ({ id }) => {
+        return await neModel.destroy({ where: { id } });
     }
 }
 

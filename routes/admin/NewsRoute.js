@@ -8,8 +8,11 @@ const upload = multer({ dest: 'public/newsuploads/' })//用户上传的数据存
 
 
 NewsRoute.post("/add",upload.single('file'),NewsController.add)
+NewsRoute.post("/list",upload.single('file'),NewsController.updateList)
 NewsRoute.delete("/list/:id",NewsController.delList)
 NewsRoute.get("/list",NewsController.getlist)
+NewsRoute.get("/list/:id",NewsController.getlist)
 NewsRoute.put("/publish",NewsController.publish)
+// NewsRoute.upload("/upload:id")
 
 module.exports  = NewsRoute

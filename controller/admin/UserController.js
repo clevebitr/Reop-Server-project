@@ -37,7 +37,7 @@ const UserController = {
                     avatar: result.avatar
                 }
             })
-            console.log('[Token发送 -> ]', token)
+            console.log('[用户Token发送 🚀-> ]', token)
         }
     },
 
