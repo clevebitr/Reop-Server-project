@@ -15,35 +15,12 @@
  1. 安装`node.js v22.5.1`
  2. 在`项目文件夹`下初始化项目
 ``` shell
-> cd ./Reop Server project/
-> npm init -y
-```
-3. 安装`依赖包`：
-
-    name     | version
-    -------- | -----
-    cookie-parser | 1.4.6
-    cors  | 2.8.5
-    express-jwt | 8.4.1
-    express|4.19.2
-    jsonwebtoken|9.0.2
-    morgan|1.10.0
-    mysql2|3.1.1
-    sequelize|6.37.3
-``` shell
-> npm install cookie-parser@1.4.6
-> npm install cors@2.8.5
-> npm install express-jwt@8.4.1
-> npm install express@4.19.2
-> npm install jsonwebtoken@9.0.2
-> npm install morgan@1.10.0
-> npm install mysql2@3.1.1
-> npm install sequelize@6.37.3
+> npm install
 ```
 - 如果npm下载过慢，请尝试更换下载源。
 
 
-4. 运行项目命令
+1. 运行项目
 ``` shell
 > node app.js
 或者
@@ -104,6 +81,105 @@ const ueModel = DB.define("users",{//表名
     }
 })
 ```
+打开`neModel.js`,调整结构
+``` javascript
+const DB = require('../model/dbconfig');//导入配置文件
+const Sequelize = require('sequelize');//导入模块
+
+//映射
+const neModel = DB.define("news",{
+    id:{//文章id
+        primaryKey:true,//主键
+        type:Sequelize.INTEGER,//数据类型INT
+        field:"id",
+        autoIncrement:true//自增
+    },
+    title:{//标题
+        type:Sequelize.STRING(300),
+        allowNull:false,
+        defaultValue:'空',
+        field:"title"
+    },
+    content:{//文章内容
+        type:Sequelize.TEXT('long'),
+        allowNull:false,
+        field:"content"
+    },
+    category:{//文章类型标识
+        type:Sequelize.INTEGER,
+        allowNull:false,
+        defaultValue:1,
+        field:"category"//1最新动态 2典型案例 3通知公告,
+    },
+    isPublish:{//文章类型标识
+        type:Sequelize.INTEGER,
+        allowNull:false,
+        defaultValue:0,
+        field:"isPublish"//0不发布 1发布
+    },
+    cover:{//文章封面
+        type:Sequelize.STRING(500),
+        allowNull:true,
+        defaultValue:null,
+        field:"cover"
+    },
+    editTime:{//文章编辑时间
+        type:Sequelize.DATE,
+        allowNull:false,
+        // defaultValue:Date.now(),
+        field:"editTime"
+    }
+})
+
+module.exports = neModel;
+```
+打开`productModel.js`,调整结构
+``` javascript
+const DB = require('../model/dbconfig');//导入配置文件
+const Sequelize = require('sequelize');//导入模块
+
+//映射
+const proModel = DB.define("product",{
+    id:{//产品id
+        primaryKey:true,//主键
+        type:Sequelize.INTEGER,//数据类型INT
+        field:"id",
+        autoIncrement:true//自增
+    },
+    title:{//标题
+        type:Sequelize.STRING(300),
+        allowNull:false,
+        defaultValue:'空',
+        field:"title"
+    },
+    introduction:{//简介内容
+        type:Sequelize.TEXT('long'),
+        allowNull:false,
+        field:"introduction"
+    },
+    summary:{//产品概述
+        type:Sequelize.STRING(300),
+        allowNull:false,
+        defaultValue:'空',
+        field:"summary"//1最新动态 2典型案例 3通知公告,
+    },
+    cover:{//封面
+        type:Sequelize.STRING(500),
+        allowNull:true,
+        defaultValue:null,
+        field:"cover"
+    },
+    editTime:{//编辑时间
+        type:Sequelize.DATE,
+        allowNull:false,
+        // defaultValue:Date.now(),
+        field:"editTime"
+    }
+})
+
+module.exports = proModel;
+```
+
  - 或者您也可以创建一个和我一样的`数据库`和`表`。
 1. 创建数据库：
 ``` sql
@@ -117,11 +193,53 @@ CREATE TABLE `users` (
 	`uname` VARCHAR(30) NOT NULL DEFAULT '空' COMMENT '用户名' COLLATE 'utf8mb4_0900_ai_ci',
 	`upwd` VARCHAR(20) NOT NULL DEFAULT '123456' COMMENT '密码' COLLATE 'utf8mb4_0900_ai_ci',
 	`email` VARCHAR(50) NULL DEFAULT NULL COMMENT '邮箱' COLLATE 'utf8mb4_0900_ai_ci',
-	`admin` INT(10) UNSIGNED NOT NULL DEFAULT '0' COMMENT '管理员',
+	`role` INT(10) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'role',
+	`introduction` VARCHAR(500) NULL DEFAULT NULL COMMENT '简介' COLLATE 'utf8mb4_0900_ai_ci',
+	`avatar` VARCHAR(500) NULL DEFAULT NULL COMMENT '头像' COLLATE 'utf8mb4_0900_ai_ci',
 	PRIMARY KEY (`id`) USING BTREE
+)
+COMMENT='用户表'
+COLLATE='utf8mb4_0900_ai_ci'
+ENGINE=InnoDB
+AUTO_INCREMENT=114521
+;
 ```
+3. 在`onlinedb`数据库中创建`products`表
+```  sql
+CREATE TABLE `products` (
+	`id` INT(10) NOT NULL AUTO_INCREMENT,
+	`title` VARCHAR(300) NOT NULL DEFAULT '空' COLLATE 'utf8mb4_0900_ai_ci',
+	`introduction` LONGTEXT NOT NULL COLLATE 'utf8mb4_0900_ai_ci',
+	`summary` VARCHAR(300) NOT NULL DEFAULT '空' COLLATE 'utf8mb4_0900_ai_ci',
+	`cover` VARCHAR(500) NULL DEFAULT NULL COLLATE 'utf8mb4_0900_ai_ci',
+	`editTime` TIMESTAMP NOT NULL,
+	PRIMARY KEY (`id`) USING BTREE
+)
+COMMENT='产品'
+COLLATE='utf8mb4_0900_ai_ci'
+ENGINE=InnoDB
+AUTO_INCREMENT=9
+;
+```
+4. 在`onlinedb`数据库中创建`news`表
+``` sql
+CREATE TABLE `news` (
+	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`title` VARCHAR(300) NOT NULL DEFAULT '空' COLLATE 'utf8mb4_0900_ai_ci',
+	`content` LONGTEXT NOT NULL COLLATE 'utf8mb4_0900_ai_ci',
+	`category` INT(10) NOT NULL DEFAULT '1',
+	`isPublish` INT(10) NOT NULL DEFAULT '0',
+	`cover` VARCHAR(500) NULL DEFAULT NULL COLLATE 'utf8mb4_0900_ai_ci',
+	`editTime` TIMESTAMP NOT NULL,
+	PRIMARY KEY (`id`) USING BTREE
+)
+COMMENT='新闻表'
+COLLATE='utf8mb4_0900_ai_ci'
+ENGINE=InnoDB
+AUTO_INCREMENT=12
+;
 
-![users表结构](./images/desc_users.png "users表结构")
+```
 ## 😶‍🌫️设置密钥
  - 该项目涉及到`token`,`密文Cookie`。需要设置`您自己的密钥`。
  - 打开`app.js`,设置`SECRET_KEY`的`值`
@@ -133,25 +251,44 @@ const SECRET_KEY = 'REOPHTMLKEY';// key
 ## ❗错误处理
  - 如果您想调整错误类型返回的值，请打开`middleware`文件夹下的`errorhandle.js`文件
 ``` javascript
-if (err.name === 'UnauthorizedError' && err.message === "No authorization token was found") 
-    {
+if (err.name === 'UnauthorizedError' && err.message === "No authorization token was found") {
       code = 401
       message = '请登录'
-    }else if (err.name === 'UnauthorizedError' && err.message === "jwt expired") {
+}else if (err.name === 'UnauthorizedError' && err.message === "jwt expired") {
       code = 401
       message = 'Token过期,请重新登录'     
-    }
+}
+
 ```
 
 ## 😁API：
-功能描述|api地址|请求类型|是否需要token
--------|-------|-------|------------
-登录|http://localhost:3000/api/login  |post|否
-注册|http://localhost:3000/api/add  |post|否
-更新信息|http://localhost:3000/api/update | put|否
-删除|http://localhost:3000/api/delete|post|是
-查询信息|http://localhost:3000/api/search|get|是 
-
+- newsRouter
+``` javascript
+NewsRoute.post("/add",upload.single('file'),NewsController.add)
+NewsRoute.post("/list",upload.single('file'),NewsController.updateList)
+NewsRoute.delete("/list/:id",NewsController.delList)
+NewsRoute.get("/list",NewsController.getlist)
+NewsRoute.get("/list/:id",NewsController.getlist)
+NewsRoute.put("/publish",NewsController.publish)
+```
+- userRouter
+``` javascript
+UserRoute.post("/login",UserController.login)//用户登录Api,调用UserController.login方法
+UserRoute.post("/upload",upload.single('file'),UserController.upload)//用户更新数据api，调用UserController.upload方法
+UserRoute.post("/add",upload.single('file'),UserController.add)
+UserRoute.put("/list/:id",UserController.putList)
+UserRoute.get("/list",UserController.getlist)
+UserRoute.get("/list/:id",UserController.getlist)
+UserRoute.delete("/list/:id",UserController.delList)
+```
+- productRouter
+``` javascript
+ProductRoute.post("/add",upload.single('file'),ProductController.add)
+ProductRoute.post("/list",upload.single('file'),ProductController.updateList)
+ProductRoute.delete("/list/:id",ProductController.delList)
+ProductRoute.get("/list",ProductController.getlist)
+ProductRoute.get("/list/:id",ProductController.getlist)
+```
 ## 📚LICENSE
 ``` test
 MIT License

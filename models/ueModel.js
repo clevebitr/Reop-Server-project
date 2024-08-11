@@ -36,13 +36,13 @@ const ueModel = DB.define("users",{
         type:Sequelize.STRING(500),
         allowNull:true,
         defaultValue:null,
-         field:"introduction"
+        field:"introduction"
     },
     avatar:{//用户头像
         type:Sequelize.STRING(500),
         allowNull:true,
         defaultValue:null,
-         field:"avatar"
+        field:"avatar"
     }
 })
 
