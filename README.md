@@ -248,6 +248,12 @@ AUTO_INCREMENT=12
 const SECRET_KEY = 'REOPHTMLKEY';// key
 ```
 
+## 😑建立目录结构
+ - 本项目需要在项目根目录下新建文件夹`public`用于存放前端传来的文件数据
+ - 在public文件夹下还需新建`avataruploads`文件夹用于存放用户头像图片
+ - 在public文件夹下还需新建`newsuploads`文件夹用于存放新闻封面
+ - 在public文件夹下还需新建`productuploads`文件夹用于存放产品封面
+
 ## ❗错误处理
  - 如果您想调整错误类型返回的值，请打开`middleware`文件夹下的`errorhandle.js`文件
 ``` javascript
