@@ -19,7 +19,7 @@ app.use(express.static(path.join(__dirname, 'public')))
 //路由中间件，只有登录api放行，其他api需要验证用户token
 app.use((req, res, next) => {
     //放行login api
-    if (req.url === "/adminapi/user/login") {
+    if (req.url === "/adminapi/user/login" || req.url === "/webapi/news/list") {
         next()
         return
     }

@@ -33,11 +33,11 @@ const NewsService = {
         const news = await neModel.findOne({ where: { id } });//根据传来的用户id查找对应新闻
         if (cover) {//如果用户上传了头像，更新头像
             if (news) {//存在对应id新闻
-                return news.update({ title, content, category, cover, isPublish, editTime });
+                return news.update({ title, content, category, cover, isPublish });
             }
         } else {//用户并未上传头像，不更新数据
             if (news) {//存在对应id新闻
-                return news.update({ title, content, category, isPublish, editTime });;
+                return news.update({ title, content, category, isPublish });;
             }
         }
     },
