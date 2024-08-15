@@ -15,6 +15,19 @@ const NewsService = {
                 ['editTime', 'DESC'],
             ]
         });
+    },
+    getToplist: async ({ limit }) => {
+        console.log('[返回客户端新闻数据]')
+        return await neModel.findAll({ 
+            where: {
+                isPublish:1
+            },
+            order: [
+                // 将转义 editTime 并针对有效方向列表进行降序排列
+                ['editTime', 'DESC'],
+            ],
+            limit:limit
+        });
     }
 }
 
