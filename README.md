@@ -1,6 +1,4 @@
 
-<img src="./images/LOGO.png" height="71.428px" width="100px" >
-
 # 🎶Reop Server
 ## 😊简介：
 本项目是基于Reop HTML 项目的单独后端项目，旨在替代Reop HTML后端
