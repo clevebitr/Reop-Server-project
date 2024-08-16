@@ -7,10 +7,11 @@ const port = 3000;//运行端口
 const cors = require('cors');//跨域
 const errorhandler = require('./middleware/errorhandler')//错误中间件
 const webNewsRoute = require("./routes/web/NewsRoter")
-
+const webProductRoute = require("./routes/web/ProductRouter")
 
 var path = require('path')//静态资源
 const JWT = require("./util/JWT");//封装的Token生成函数
+const { request } = require("http");
 const SECRET_KEY = 'REOPHTMLKEY';// tokenkey
 
 //跨域中间件
@@ -19,6 +20,7 @@ app.use(cors());
 app.use(express.static(path.join(__dirname, 'public')))
 
 app.use("/webapi/news/",webNewsRoute)//新闻接口暴露给外部
+app.use("/webapi/product/",webProductRoute)//产品接口暴露给外部
 
 //路由中间件，只有登录api放行，其他api需要验证用户token
 app.use((req, res, next) => {
